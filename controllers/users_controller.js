@@ -15,9 +15,10 @@ module.exports.profile = function(req,res){
         return res.redirect('/users/sign-in');
     }
 
-    return res.render('user_profile',{
-        title: "codeial | profile"
-    })
+    // return res.render('user_profile',{
+    //     title: "codeial | profile aaaaa",
+    //     // user: user
+    // })
 }
 
 //render the sign up page
@@ -47,7 +48,7 @@ module.exports.create = function(req,res){
             User.create(req.body, function(err,user){
                 if(err){console.log('there is error in creating user while signing up'); return}
 
-                return res.redirect('/user/sign-in')
+                return res.redirect('/users/sign-in')
             })
         }else{
             return res.redirect('back');
@@ -70,7 +71,7 @@ module.exports.createSession = function(req,res){
 
             // handle session creation
             res.cookie('user_id',user.id);
-            res.resdirect('/user/profile');
+            res.redirect('/users/profile');
 
         }else{
             //handle user not found

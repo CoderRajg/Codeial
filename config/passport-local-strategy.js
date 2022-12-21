@@ -14,7 +14,8 @@ passport.use(new LocalStrategy({
                 console.log('Error in finding user --> passport');
                 return done(err);
             }
-            if(!user || user.passport != password){
+            // console.log(user);
+            if(!user || user.password != password){
                 console.log('Invalid username or password');
                 return done(null, false);
             }
@@ -40,6 +41,25 @@ passport.deserializeUser(function(id, done){
         return done(null, user);
     })
 });
+
+// check if user is suthenticated
+passport.checkAuthentication = function(req,res,next){
+    //if user is signed in,then pass on the request to the next function(controller's function)
+    if(req.isAuthenticated()){
+        return next();
+    }
+
+    //if user is not signed in
+    return res.redirect('/users/sign-in');
+}
+
+passport.setAuthenticatedUser = function(req,res,next){
+    if(req.isAuthenticated()){
+        // req.user contains the currect signed in user from the session cookie and we r just sending this to locals for the views
+        res.local.user = res.user;
+    }
+    next();
+}
 
 
 module.exports = passport;

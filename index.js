@@ -23,12 +23,30 @@ app.set('layout extractScipts', true);
 
 
 
-//use express router
-app.use('/',require('./routes'));
+
 
 
 app.set('view engine','ejs');
 app.set('views','./views');
+
+app.use(session({
+    name: 'codeial',
+    //to do letter because the key would be unique and not shared with anyone
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (1000*60*100)
+    }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.setAuthenticatedUser);
+
+//use express router
+app.use('/',require('./routes'));
 
 app.listen(port,function(err){
     if(err){

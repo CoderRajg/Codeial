@@ -7,13 +7,23 @@ const db = require('./config/mongoose');
 // used for session cookie
 const session = require('express-session');
 const passport = require('passport');
-const passportLocal = require('./config/passport-local-strategy')
+const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo')(session);
+const sassMiddleware = require('node-sass-middleware');
 
+
+app.use(sassMiddleware({
+    src: "./assets/scss",
+    dest: './assets/css',
+    debug: true,
+    outputStyle: 'expanded',
+    prefix: '/css'
+}))
 app.use(express.urlencoded());
 
 app.use(cookieparser());
 
-app.use(express.static('./assets'))
+app.use(express.static('./assets'));
 
 app.use(expressLayouts);
 
@@ -29,6 +39,8 @@ app.set('layout extractScipts', true);
 app.set('view engine','ejs');
 app.set('views','./views');
 
+
+//mongo store is used to store session in cookie
 app.use(session({
     name: 'codeial',
     //to do letter because the key would be unique and not shared with anyone
@@ -37,7 +49,16 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000*60*100)
-    }
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection: db,
+            autoRemove: 'disabled'
+        },
+        function(err){
+            console.log(err || 'connect mongodb setup ok!');
+        }
+    )
 }));
 
 app.use(passport.initialize());

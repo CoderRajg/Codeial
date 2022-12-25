@@ -3,7 +3,7 @@ const User = require('../models/user');
 module.exports.profile = function(req,res){
     // res.end('<h1>Users profile</h1>');
     return res.render('user_profile',{
-        // title: "codeial | profile aaaaa",
+        title: "codeial | profile aaaaa"
         // user: user
     })
 }

@@ -1,16 +1,11 @@
-<!-- <html>
-    <head>
-        <title>
-            <%= title %>
-        </title>
-    </head>
-    <body>
 
-        <%- include('_header'); %> -->
 <link rel="stylesheet" href="/css/user_profile.css">
         <h1>Codeial/ <%= title %> </h1>
 
-        <!-- <%- include('_footer'); %>
-
-    </body>
-</html> -->
+        <section id="feed-post">
+            <h4>Posts</h4>
+            <form action="/post/create" id="new-post-form" method="POST" >
+                <textarea name="content" id="" cols="30" rows="3" placeholder="What is in your mind.."></textarea>
+                <input type="submit" value="Post">
+            </form>
+        </section>

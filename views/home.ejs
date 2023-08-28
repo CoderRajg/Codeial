@@ -2,10 +2,36 @@
 <link rel="stylesheet" href="/css/user_profile.css">
         <h1>Codeial/ <%= title %> </h1>
 
-        <section id="feed-post">
-            <h4>Posts</h4>
-            <form action="/post/create" id="new-post-form" method="POST" >
-                <textarea name="content" id="" cols="30" rows="3" placeholder="What is in your mind.."></textarea>
-                <input type="submit" value="Post">
-            </form>
-        </section>
+<section id="feed-post">
+    <h4>Posts</h4>
+    <% if(locals.user){ %>
+    <form action="/post/create" id="new-post-form" method="POST" >
+        <textarea name="content" id="" cols="30" rows="3" placeholder="What is in your mind.."></textarea>
+        <input type="submit" value="Post">
+    </form>
+    <% } %>
+    <div id="post-list-container">
+        <ul>
+            <% for(post of posts){%>
+            <p>
+                <li>
+                    <%= post.content %>
+                    <br>
+                    <small>
+                        <%= post.user.name  %>
+                    </small>
+                </li>
+            </p>
+            <div class="post-comments">
+                <% if(locals.user){>%
+                    <form action="/comments/create" method="POST">
+                        <input type="text" name="content" placeholder="Type here to add comment...">
+                        <input type="hidden" name="post" value="<%= post._id %>">
+                        <input type="submit" value="Add comment">
+                    </form>
+                %< } %>
+            </div>
+            <% } %>
+        </ul>
+    </div>   
+</section>
